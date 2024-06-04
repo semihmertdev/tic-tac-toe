@@ -19,6 +19,10 @@ This is a simple Tic Tac Toe game implemented using HTML, CSS, and JavaScript.
 4. The game will display the current player's turn, and after each move, it will check for a winner or a draw.
 5. Click the "Reset Game" button to start a new game.
 
+## Live Preview
+
+[Play the game now!](https://semihmertdev.github.io/tic-tac-toe/)
+
 ## What I Learned
 
 - Implementing game logic in JavaScript.
