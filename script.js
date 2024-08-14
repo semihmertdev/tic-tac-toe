@@ -8,7 +8,7 @@ const Gameboard = (() => {
     };
 
     const makeMove = (index, marker) => {
-        if (board[index] === '') {
+        if (board[index] === '' && !GameController.gameOver) {
             board[index] = marker;
             return true;
         }
@@ -50,14 +50,13 @@ const GameController = (() => {
             if (checkWin()) {
                 UIController.updateMessage(`${currentPlayer.name} wins!`);
                 gameOver = true;
-                return;
             } else if (Gameboard.getBoard().every(cell => cell !== '')) {
                 UIController.updateMessage('Draw!');
                 gameOver = true;
-                return;
+            } else {
+                switchPlayer();
+                UIController.updateMessage(`${currentPlayer.name}'s turn`);
             }
-            switchPlayer();
-            UIController.updateMessage(`${currentPlayer.name}'s turn`);
         } else {
             UIController.updateMessage('Invalid move. Try again.');
         }
@@ -77,7 +76,7 @@ const GameController = (() => {
         });
     };
 
-    return { startGame, playRound };
+    return { startGame, playRound, gameOver };
 })();
 
 const UIController = (() => {
@@ -99,15 +98,13 @@ const UIController = (() => {
     });
 
     resetButton.addEventListener('click', () => {
-        const player1Name = document.querySelector('#player1Name').value || 'Player 1';
-        const player2Name = document.querySelector('#player2Name').value || 'Player 2';
-        GameController.startGame(player1Name, player2Name);
+        GameController.startGame(document.querySelector('#player1Name').value || 'Player 1', document.querySelector('#player2Name').value || 'Player 2');
     });
 
     const updateBoard = (board) => {
         cells.forEach((cell, index) => {
             cell.textContent = board[index];
-            cell.className = 'cell';
+            cell.className = 'cell'; // Reset class
             if (board[index] === 'X') {
                 cell.classList.add('x');
             } else if (board[index] === 'O') {
@@ -126,4 +123,3 @@ const UIController = (() => {
 document.addEventListener('DOMContentLoaded', () => {
     GameController.startGame('Player 1', 'Player 2');
 });
-
